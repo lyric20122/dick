@@ -1,6 +1,7 @@
 'use strict';
 
 var del = require('del');
+var exec = require('child_process').exec;
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
 
@@ -14,6 +15,13 @@ var dirs = {
   source: './src',
   build: './build'
 };
+
+// Task to compile using metalsmith
+gulp.task('metalsmith', function (cb) {
+  exec('node index.js', function (err) {
+    cb(err);
+  });
+})
 
 // Connect task to serve web server and reload automatically
 gulp.task('connect', function() {
@@ -43,4 +51,4 @@ gulp.task('git', ['clean'], function(){
 
 // Register tasks
 gulp.task('fetch', ['git']);
-gulp.task('default', ['connect']);
+gulp.task('default', ['connect', 'metalsmith']);
