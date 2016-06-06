@@ -2,8 +2,10 @@
   "name": "static-site-example",
   "private": true,
   "dependencies": {
+    "del": "^2.2.0",
     "gulp": "^3.9.1",
     "gulp-connect": "^4.0.0",
+    "gulp-git": "^1.7.2",
     "gulp-load-plugins": "^1.2.4",
     "handlebars": "^4.0.5",
     "metalsmith": "^2.1.0",
