@@ -4,11 +4,11 @@
 2. Clone this repository:  
   `git clone https://github.com/[username]/[repository]`
 3. Install dependencies using `npm`:  
-  `npm install`
+  `npm i`
 4. Fetch the `Rocket.Chat.Docs` source files:  
-  `gulp fetch`  
+  `gulp fetch`
 5. Compile assets:  
-  `gulp`  
+  `gulp`
 
 It will create a `build` directory with the static pages.
 
