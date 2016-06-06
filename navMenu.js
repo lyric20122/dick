@@ -12,7 +12,7 @@ function navMenu() {
 			}
 			var oneLevel = file.substr(0, file.indexOf('/'));
 
-			if (oneLevel == '') {
+			if (oneLevel == '' || oneLevel == '.git') {
 				continue;
 			}
 
