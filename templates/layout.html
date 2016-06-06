@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>{{ title }}</title>
+	<meta name="description" content="{{ description }}">
+	<link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/default.min.css">
+	<link rel="stylesheet" href="file:///home/chinello/dev/docs-metalsmith/build/assets/layout.css">
+</head>
+<body>
+	<div id="react-app">
+		<div class="page">
+			<div class="header">
+				{{> header}}
+			</div>
+			<div class="docs">
+				<div class="sidebar">
+					<div class="menu">
+						{{> sidebar }}
+					</div>
+				</div>
+				<div class="content">
+					<div class="content-html">
+						<article class="subdoc">
+							<header>
+								<a href="{{file.githubPath}}">Edit on GitHub</a>
+							</header>
+							{{{ contents }}}
+						</article>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
