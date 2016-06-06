@@ -1,13 +1,20 @@
-# How to use
+# Installation
 
-```
-git submodule init
-git submodule update
-
-make
-```
+1. Make sure you've installed all requirements
+2. Clone this repository:  
+  `git clone https://github.com/[username]/[repository]`
+3. Install dependencies using `npm`:  
+  `npm i`
+4. Fetch the `Rocket.Chat.Docs` source files:  
+  `gulp fetch`
+5. Compile assets:  
+  `gulp`
 
 It will create a `build` directory with the static pages.
+
+# Requirements
+
+* Gulp (`npm i -g gulp-cli`)
 
 # Missing from `redoc`
 

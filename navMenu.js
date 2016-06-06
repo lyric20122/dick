@@ -12,7 +12,7 @@ function navMenu() {
 			}
 			var oneLevel = file.substr(0, file.indexOf('/'));
 
-			if (oneLevel == '') {
+			if (oneLevel == '' || oneLevel == '.git') {
 				continue;
 			}
 
@@ -30,7 +30,7 @@ function navMenu() {
 				folders.push({
 					label: secondLevel.replace(/^[0-9. ]+/, ''),
 					sortTitle: oneLevel+'/'+secondLevel,
-					link: 'file:///home/chinello/dev/docs-metalsmith/build/' + oneLevel+'/'+secondLevel + '/index.html',
+					link: '/' + oneLevel+'/'+secondLevel + '/index.html',
 					class: 'guide-nav-item level-2'
 				});
 			}
@@ -43,7 +43,7 @@ function navMenu() {
 			folders.push({
 				label: oneLevel.replace(/^[0-9. ]+/, ''),
 				sortTitle: oneLevel+'/0',
-				link: 'file:///home/chinello/dev/docs-metalsmith/build/' + oneLevel + '/index.html',
+				link: '/' + oneLevel + '/index.html',
 				class: 'guide-nav-item'
 			});
 		}
