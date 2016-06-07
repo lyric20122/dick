@@ -6,6 +6,7 @@ function generateMenu() {
 		var unique = {};
 
 		for (var file in files) {
+			var data = files[file];
 			var slash = file.indexOf('/');
 			if (!slash) {
 				continue;
@@ -28,8 +29,8 @@ function generateMenu() {
 				unique[oneLevel+'/'+secondLevel] = 1;
 
 				folders.push({
-					label: secondLevel.replace(/^[0-9. ]+/, ''),
-					sortTitle: oneLevel+'/'+secondLevel,
+					label: secondLevel.replace(/(^|\/)[0-9\. ]+/g, '$1'),
+					sortTitle: data.originalName,
 					link: '/' + oneLevel+'/'+secondLevel + '/index.html',
 					class: 'guide-nav-item level-2'
 				});
@@ -41,8 +42,8 @@ function generateMenu() {
 			unique[oneLevel] = 1;
 
 			folders.push({
-				label: oneLevel.replace(/^[0-9. ]+/, ''),
-				sortTitle: oneLevel+'/0',
+				label: oneLevel.replace(/(^|\/)[0-9\. ]+/g, '$1'),
+				sortTitle: data.originalName,
 				link: '/' + oneLevel + '/index.html',
 				class: 'guide-nav-item'
 			});
