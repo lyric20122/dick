@@ -3,7 +3,7 @@
 var del = require('del');
 var exec = require('child_process').exec;
 var gulp = require('gulp');
-var $ = require('gulp-load-plugins')();
+var plugins = require('gulp-load-plugins')();
 
 // Function to clean files using del()
 function clean(path) {
@@ -19,19 +19,20 @@ var dirs = {
 // Task to compile using metalsmith
 gulp.task('metalsmith', function (cb) {
   exec('node index.js', function (err) {
+    if (!err) {
+      gulp.src(dirs.build+'/**/*')
+        .pipe(plugins.connect.reload());
+    }
     cb(err);
   });
-
-  // @TODO reload not working
-  gulp.src(dirs.source+'/*.html')
-    .pipe($.connect.reload());
 })
 
 // Connect task to serve web server and reload automatically
 gulp.task('connect', function() {
-  $.connect.server({
+  plugins.connect.server({
     root: 'build',
-    livereload: true
+    livereload: true,
+    port: 8090
   });
 });
 
@@ -47,15 +48,15 @@ gulp.task('clean', function () {
 
 // Watch for changes in files
 gulp.task('watch', function() {
-  gulp.watch(dirs.source + '/*', ['metalsmith']);
-  gulp.watch('./assets/*', ['metalsmith']);
-  gulp.watch('./templates/*', ['metalsmith']);
+  gulp.watch(dirs.source + '/**/*', ['metalsmith']);
+  gulp.watch('./assets/**/*', ['metalsmith']);
+  gulp.watch('./templates/**/*', ['metalsmith']);
  });
 
 // Git clone task to fetch source files from Rocket.Chat.Docs which is also
 // dependent on the 'clean' task
 gulp.task('git', ['clean'], function(){
-  $.git.clone('https://github.com/RocketChat/Rocket.Chat.Docs', { args: dirs.source }, function (err) {
+  plugins.git.clone('https://github.com/RocketChat/Rocket.Chat.Docs', { args: dirs.source }, function (err) {
     if (err) throw err;
   });
 });
