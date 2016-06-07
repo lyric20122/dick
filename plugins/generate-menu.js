@@ -1,6 +1,6 @@
 var _ = require('underscore');
 
-function navMenu() {
+function generateMenu() {
 	return function(files, metalsmith, done) {
 		var folders = [];
 		var unique = {};
@@ -72,5 +72,5 @@ function navMenu() {
 	}
 };
 
-module.exports = navMenu;
+module.exports = generateMenu;
 

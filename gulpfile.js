@@ -21,6 +21,10 @@ gulp.task('metalsmith', function (cb) {
   exec('node index.js', function (err) {
     cb(err);
   });
+
+  // @TODO reload not working
+  gulp.src(dirs.source+'/*.html')
+    .pipe($.connect.reload());
 })
 
 // Connect task to serve web server and reload automatically
@@ -41,6 +45,13 @@ gulp.task('clean', function () {
   return clean(files);
 });
 
+// Watch for changes in files
+gulp.task('watch', function() {
+  gulp.watch(dirs.source + '/*', ['metalsmith']);
+  gulp.watch('./assets/*', ['metalsmith']);
+  gulp.watch('./templates/*', ['metalsmith']);
+ });
+
 // Git clone task to fetch source files from Rocket.Chat.Docs which is also
 // dependent on the 'clean' task
 gulp.task('git', ['clean'], function(){
@@ -51,4 +62,4 @@ gulp.task('git', ['clean'], function(){
 
 // Register tasks
 gulp.task('fetch', ['git']);
-gulp.task('default', ['connect', 'metalsmith']);
+gulp.task('default', ['connect', 'metalsmith', 'watch']);

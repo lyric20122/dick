@@ -5,9 +5,14 @@ var permalinks  = require('metalsmith-permalinks');
 var metallic = require('metalsmith-metallic');
 var each = require('metalsmith-each');
 var assets = require('metalsmith-assets');
-var navMenu = require('./navMenu.js');
+var parseGitHubLinks = require('./plugins/parse-github-links.js');
+var generateMenu = require('./plugins/generate-menu.js');
+var slugifyFiles = require('./plugins/slugify-files.js');
+var slugifyLinks = require('./plugins/slugify-links.js');
 var slug = require('metalsmith-slug');
 var ignore = require('metalsmith-ignore');
+var slugifyPath = require('slugify-path').default;
+var headingsidentifier = require("metalsmith-headings-identifier");
 
 Metalsmith(__dirname)
   .metadata({
@@ -23,18 +28,8 @@ Metalsmith(__dirname)
     '.git/*',
     '.git*'
   ]))
-  .use(function(files, metalsmith, done) {
-    for (file in files) {
-      files[file].githubPath = 'https://github.com/RocketChat/Rocket.Chat.Docs/tree/master/' + file;
-      // file.githubPath = 'https://github.com/RocketChat/Rocket.Chat.Docs/tree/master/' + filename;
-    }
-      // console.log('file.githubPath ->',file.githubPath);
-      // console.log('filename ->',filename);
-
-    done();
-  })
-  .use(
-    each(function (file, filename) {
+  .use(parseGitHubLinks())
+  .use(each(function (file, filename) {
       return filename.replace(/README\.md/, 'index.md');
     }
   ))
@@ -48,12 +43,16 @@ Metalsmith(__dirname)
     tables: true
   }))
   .use(metallic())
-  .use(navMenu())
+  .use(generateMenu())
+  .use(slugifyFiles())
   .use(layouts({
     engine: 'handlebars',
     default: 'layout.html',
     directory: 'templates',
     partials: 'templates'
+  }))
+  .use(headingsidentifier({
+    linkTemplate: "<a class='myCustomHeadingsAnchorClass' href='#%s'><span></span></a>"
   }))
   .use(assets({
     source: './assets', // relative to the working directory
