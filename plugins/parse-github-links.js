@@ -1,19 +1,12 @@
 module.exports = parseGitHubLinks;
 
 function parseGitHubLinks() {
-	return function() {
+	return function(files, metalsmith, done) {
+		Object.keys(files).forEach(function(file) {
+			var data = files[file];
 
+			data.githubPath = 'https://github.com/RocketChat/Rocket.Chat.Docs/blob/master/' + file;
+		});
+		done();
 	}
-
 }
-
-// function(files, metalsmith, done) {
-// for (file in files) {
-//   files[file].githubPath = 'https://github.com/RocketChat/Rocket.Chat.Docs/tree/master/' + file;
-//   // file.githubPath = 'https://github.com/RocketChat/Rocket.Chat.Docs/tree/master/' + filename;
-// }
-//   // console.log('file.githubPath ->',file.githubPath);
-//   // console.log('filename ->',filename);
-
-// done();
-// }

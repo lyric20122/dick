@@ -49,6 +49,7 @@ gulp.task('clean', function() {
 // Watch for changes in files
 gulp.task('watch', function() {
 	gulp.watch(dirs.source + '/**/*', ['metalsmith']);
+	gulp.watch('./plugins/**/*', ['metalsmith']);
 	gulp.watch('./assets/**/*', ['metalsmith']);
 	gulp.watch('./templates/**/*', ['metalsmith']);
 });
