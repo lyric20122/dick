@@ -34,7 +34,7 @@ Metalsmith(__dirname)
 		gfm: true,
 		tables: true
 	}))
-	.use(metallic())
+	// .use(metallic())
 	.use(layouts({
 		engine: 'handlebars',
 		default: 'layout.html',
