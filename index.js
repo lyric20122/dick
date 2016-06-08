@@ -12,6 +12,11 @@ var slug = require('metalsmith-slug');
 var ignore = require('metalsmith-ignore');
 var headingsidentifier = require("metalsmith-headings-identifier");
 
+var rootDir = '';
+if (process.argv[2]) {
+	rootDir = process.argv[2];
+}
+
 Metalsmith(__dirname)
 	.metadata({
 		title: "Rocket.Chat Docs",
@@ -20,7 +25,7 @@ Metalsmith(__dirname)
 		url: "http://www.metalsmith.io/"
 	})
 	.source('./src')
-	.destination('./build')
+	.destination('./build' + rootDir)
 	.clean(true)
 	.use(ignore([
 		'.git/**/*',
@@ -28,12 +33,20 @@ Metalsmith(__dirname)
 	]))
 	.use(parseGitHubLinks())
 	.use(redoc.slugifyFiles())
-	.use(generateMenu())
+	.use(generateMenu(rootDir))
 	.use(markdown({
 		smartypants: true,
 		gfm: true,
 		tables: true
 	}))
+	.use(function(files, metalsmith, done) {
+		Object.keys(files).forEach(function(file) {
+			var data = files[file];
+
+			data.rootPath = rootDir;
+		});
+		done();
+	})
 	// .use(metallic())
 	.use(layouts({
 		engine: 'handlebars',
@@ -42,9 +55,9 @@ Metalsmith(__dirname)
 		partials: 'templates'
 	}))
 	.use(redoc.slugifyLinks())
-	.use(headingsidentifier({
-		linkTemplate: "<a class='myCustomHeadingsAnchorClass' href='#%s'><span></span></a>"
-	}))
+	// .use(headingsidentifier({
+	// 	linkTemplate: "<a class='myCustomHeadingsAnchorClass' href='#%s'><span></span></a>"
+	// }))
 	.use(assets({
 		source: './assets', // relative to the working directory
 		destination: './assets' // relative to the build directory

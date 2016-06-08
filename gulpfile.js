@@ -11,14 +11,16 @@ function clean(path) {
 }
 
 // Object with directory paths for further usage
+var rootPath = '/docs';
+
 var dirs = {
 	source: './src',
-	build: './build'
+	build: './build' + rootPath
 };
 
 // Task to compile using metalsmith
 gulp.task('metalsmith', function(cb) {
-	exec('node index.js', function(err) {
+	exec('node index.js '+rootPath, function(err) {
 		if (!err) {
 			gulp.src(dirs.build + '/**/*')
 				.pipe(plugins.connect.reload());
