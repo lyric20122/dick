@@ -20,10 +20,13 @@ function slug(filePath, data) {
 			if (totalParts < 2) {
 				previousPart = 1;
 			}
-			data.title = fileParts[totalParts - previousPart].replace(/(^|\/)[0-9\. ]+/g, '$1');
 
-			if (data.title === 'index.md') {
+			var title = fileParts[totalParts - previousPart].replace(/(^|\/)[0-9\. ]+/g, '$1');
+
+			if (title === 'index.md') {
 				data.title = 'Rocket.Chat Docs';
+			} else {
+				data.title = 'Rocket.Chat Docs - ' + title;
 			}
 		}
 	}
