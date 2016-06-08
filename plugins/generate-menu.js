@@ -10,12 +10,53 @@ function createTree(fileTree, items) {
 			fileTree[item] = {};
 		}
 		createTree(fileTree[item], items);
-	// } else {
-	// 	fileTree[item] = {};
+	} else {
+		fileTree[item] = {};
 	}
 }
 
-function generateMenu() {
+function createMenu(fileTree, initialItem, initialPath, level) {
+	var folders = [];
+
+	var linkClass;
+	var levelClass = '';
+
+	if (level > 1) {
+		levelClass = ' level-' + level;
+	}
+
+	Object.keys(fileTree).forEach(function(item) {
+		if (item === 'README.md' || (_.isEmpty(fileTree[item]) && !item.match(/\.md$/))) {
+			return;
+		}
+
+		var extension = '';
+
+		if (item.match(/\.md$/)) {
+			linkClass = 'guide-sub-nav-item';
+			extension = '.html';
+		} else {
+			linkClass = 'guide-nav-item';
+		}
+
+		var title = item.replace(/^[0-9]+\. /, '').replace(/\.md$/, '');
+		folders.push({
+			label: title,
+			sortTitle: initialItem + '-' + (item.match(/\.md$/) ? '' : item),
+			link: initialPath + '/' + slugifyPath(title) + extension,
+			class: linkClass + levelClass
+		});
+
+		folders = folders.concat(createMenu(fileTree[item], initialItem + '-' + item, initialPath + '/' + slugifyPath(title), level + 1));
+	});
+
+	return folders;
+}
+
+function generateMenu(rootPath) {
+	if (!rootPath) {
+		rootPath = '';
+	}
 	return function(files, metalsmith, done) {
 		var fileTree = {};
 
@@ -29,36 +70,41 @@ function generateMenu() {
 		});
 
 		var level = 1;
-		var folders = [];
-		Object.keys(fileTree).forEach(function(item) {
-			var title = item.replace(/^[0-9]+\. /, '');
-			folders.push({
-				label: title,
-				sortTitle: item,
-				link: '/' + slugifyPath(title),
-				class: 'guide-nav-item'
-			});
+		// var folders = [];
 
-			Object.keys(fileTree[item]).forEach(function(subitem) {
-				var subtitle = subitem.replace(/^[0-9]+\. /, '');
-				folders.push({
-					label: subtitle,
-					sortTitle: item + '-' + subitem,
-					link: '/' + slugifyPath(title) + '/' + slugifyPath(subtitle),
-					class: 'guide-nav-item level-2'
-				});
+		var folders = createMenu(fileTree, '', rootPath, 1);
 
-				Object.keys(fileTree[item][subitem]).forEach(function(subitem2) {
-					var subtitle2 = subitem2.replace(/^[0-9]+\. /, '');
-					folders.push({
-						label: subtitle2,
-						sortTitle: item + '-' + subitem + '-' + subitem2,
-						link: '/' + slugifyPath(title) + '/' + slugifyPath(subtitle2),
-						class: 'guide-nav-item level-3'
-					});
-				});
-			});
-		});
+		// console.log('lero ->',lero);
+
+		// Object.keys(fileTree).forEach(function(item) {
+		// 	var title = item.replace(/^[0-9]+\. /, '');
+		// 	folders.push({
+		// 		label: title,
+		// 		sortTitle: item,
+		// 		link: '/' + slugifyPath(title),
+		// 		class: 'guide-nav-item'
+		// 	});
+
+		// 	Object.keys(fileTree[item]).forEach(function(subitem) {
+		// 		var subtitle = subitem.replace(/^[0-9]+\. /, '');
+		// 		folders.push({
+		// 			label: subtitle,
+		// 			sortTitle: item + '-' + subitem,
+		// 			link: '/' + slugifyPath(title) + '/' + slugifyPath(subtitle),
+		// 			class: 'guide-nav-item level-2'
+		// 		});
+
+		// 		Object.keys(fileTree[item][subitem]).forEach(function(subitem2) {
+		// 			var subtitle2 = subitem2.replace(/^[0-9]+\. /, '');
+		// 			folders.push({
+		// 				label: subtitle2,
+		// 				sortTitle: item + '-' + subitem + '-' + subitem2,
+		// 				link: '/' + slugifyPath(title) + '/' + slugifyPath(subtitle2),
+		// 				class: 'guide-nav-item level-3'
+		// 			});
+		// 		});
+		// 	});
+		// });
 
 		var newFolders = _.sortBy(folders, 'sortTitle');
 		for (var file in files) {
