@@ -8,8 +8,10 @@
     "gulp": "^3.9.1",
     "gulp-connect": "^4.0.0",
     "gulp-git": "^1.7.2",
+    "gulp-less": "^3.1.0",
     "gulp-load-plugins": "^1.2.4",
     "handlebars": "^4.0.5",
+    "highlight.js": "^9.4.0",
     "metalsmith": "^2.1.0",
     "metalsmith-assets": "^0.1.0",
     "metalsmith-each": "^0.1.1",
@@ -18,9 +20,8 @@
     "metalsmith-layouts": "^1.4.1",
     "metalsmith-less": "^2.0.0",
     "metalsmith-markdownit": "^0.3.0",
-    "metalsmith-metallic": "^1.0.0",
-    "metalsmith-permalinks": "^0.5.0",
     "metalsmith-slug": "^0.2.0",
+    "path": "^0.12.7",
     "slugify-path": "^1.2.0",
     "underscore": "^1.8.3"
   }

@@ -3,7 +3,9 @@
 var del = require('del');
 var exec = require('child_process').exec;
 var gulp = require('gulp');
+var less = require('gulp-less');
 var plugins = require('gulp-load-plugins')();
+var path = require('path');
 
 // Function to clean files using del()
 function clean(path) {
@@ -20,12 +22,12 @@ var dirs = {
 
 // Task to compile using metalsmith
 gulp.task('metalsmith', function(cb) {
-	exec('node index.js '+rootPath, function(err) {
+	exec('node index.js ' + rootPath, function(err) {
 		if (!err) {
 			gulp.src(dirs.build + '/**/*')
-				.pipe(plugins.connect.reload());
+				.pipe(plugins.connect.reload())
+				.on('end', cb);
 		}
-		cb(err);
 	});
 })
 
@@ -48,13 +50,22 @@ gulp.task('clean', function() {
 	return clean(files);
 });
 
+gulp.task('less', ['metalsmith'], function() {
+	return gulp.src('./layouts/styles/main.less')
+		.pipe(less({
+			paths: './layouts/styles'
+		}))
+		.pipe(gulp.dest('./build' + rootPath + '/assets'));
+});
+
 // Watch for changes in files
 gulp.task('watch', function() {
-	gulp.watch('./index.js', ['metalsmith']);
-	gulp.watch(dirs.source + '/**/*', ['metalsmith']);
-	gulp.watch('./plugins/**/*', ['metalsmith']);
-	gulp.watch('./assets/**/*', ['metalsmith']);
-	gulp.watch('./templates/**/*', ['metalsmith']);
+	gulp.watch('./layouts/**/*.less', ['less']);
+	gulp.watch('./index.js', ['metalsmith', 'less']);
+	gulp.watch(dirs.source + '/**/*', ['metalsmith', 'less']);
+	gulp.watch('./plugins/**/*', ['metalsmith', 'less']);
+	gulp.watch('./assets/**/*', ['metalsmith', 'less']);
+	gulp.watch('./layouts/**/*.html', ['metalsmith', 'less']);
 });
 
 // Git clone task to fetch source files from Rocket.Chat.Docs which is also
@@ -67,5 +78,5 @@ gulp.task('git', ['clean'], function() {
 
 // Register tasks
 gulp.task('fetch', ['git']);
-gulp.task('default', ['connect', 'metalsmith', 'watch']);
+gulp.task('default', ['connect', 'metalsmith', 'less', 'watch']);
 
