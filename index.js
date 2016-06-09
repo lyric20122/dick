@@ -7,7 +7,8 @@ var each = require('metalsmith-each');
 var assets = require('metalsmith-assets');
 var parseGitHubLinks = require('./plugins/parse-github-links.js');
 var generateMenu = require('./plugins/generate-menu.js');
-var redoc = require('./plugins/slugify-files.js');
+var slugifyFiles = require('./plugins/slugify-files.js');
+var slugifyLinks = require('./plugins/slugify-links.js');
 var slug = require('metalsmith-slug');
 var ignore = require('metalsmith-ignore');
 var headingsidentifier = require("metalsmith-headings-identifier");
@@ -32,7 +33,7 @@ Metalsmith(__dirname)
 		'.git*'
 	]))
 	.use(parseGitHubLinks())
-	.use(redoc.slugifyFiles())
+	.use(slugifyFiles())
 	.use(generateMenu(rootDir))
 	.use(markdown({
 		smartypants: true,
@@ -54,7 +55,7 @@ Metalsmith(__dirname)
 		directory: 'templates',
 		partials: 'templates'
 	}))
-	.use(redoc.slugifyLinks())
+	.use(slugifyLinks(rootDir))
 	// .use(headingsidentifier({
 	// 	linkTemplate: "<a class='myCustomHeadingsAnchorClass' href='#%s'><span></span></a>"
 	// }))
