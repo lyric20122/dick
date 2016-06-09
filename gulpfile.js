@@ -9,7 +9,7 @@ var path = require('path');
 
 // Function to clean files using del()
 function clean(path) {
-	return del(path);
+	return del.sync(path);
 }
 
 // Object with directory paths for further usage
@@ -70,13 +70,32 @@ gulp.task('watch', function() {
 
 // Git clone task to fetch source files from Rocket.Chat.Docs which is also
 // dependent on the 'clean' task
-gulp.task('git', ['clean'], function() {
+gulp.task('git', ['clean'], function(cb) {
 	plugins.git.clone('https://github.com/RocketChat/Rocket.Chat.Docs', { args: dirs.source }, function(err) {
 		if (err) throw err;
+		cb();
 	});
+});
+
+gulp.task('build', ['git'], function(cb) {
+	console.log('git done');
+	exec('node index.js ' + rootPath, function(err) {
+		cb();
+	});
+});
+
+gulp.task('build-css', ['build'], function(cb) {
+	return gulp.src('./layouts/styles/main.less')
+		.pipe(less({
+			paths: './layouts/styles'
+		}))
+		.pipe(gulp.dest('./build' + rootPath + '/assets'));
 });
 
 // Register tasks
 gulp.task('fetch', ['git']);
 gulp.task('default', ['connect', 'metalsmith', 'less', 'watch']);
+
+gulp.task('deploy', ['git', 'build', 'build-css']);
+// gulp.task('deploy', ['git', 'build', 'less']);
 
