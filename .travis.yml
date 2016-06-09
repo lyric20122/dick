@@ -20,10 +20,11 @@ script:
     - gulp deploy
 
 after_success:
-    - mkdir build
-    - mv * build
     - tar -czf package.tgz build
     - export SSHPASS=$DEPLOY_PASS
+    - echo $DEPLOY_USER
+    - echo $DEPLOY_HOST
+    - echo $DEPLOY_PATH
     - sshpass -e scp package.tgz $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
     - sshpass -e ssh $DEPLOY_USER@$DEPLOY_HOST $DEPLOY_PATH/deploy.sh
 
