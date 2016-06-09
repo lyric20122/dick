@@ -1,5 +1,4 @@
 var Metalsmith = require('metalsmith');
-var markdown = require('metalsmith-markdown');
 var layouts = require('metalsmith-layouts');
 var permalinks = require('metalsmith-permalinks');
 var metallic = require('metalsmith-metallic');
@@ -12,6 +11,7 @@ var slugifyLinks = require('./plugins/slugify-links.js');
 var slug = require('metalsmith-slug');
 var ignore = require('metalsmith-ignore');
 var headingsidentifier = require("metalsmith-headings-identifier");
+var markdown = require('metalsmith-markdownit');
 
 var rootDir = '';
 if (process.argv[2]) {
@@ -36,9 +36,8 @@ Metalsmith(__dirname)
 	.use(slugifyFiles())
 	.use(generateMenu(rootDir))
 	.use(markdown({
-		smartypants: true,
-		gfm: true,
-		tables: true
+		typographer: true,
+		html: true
 	}))
 	.use(function(files, metalsmith, done) {
 		Object.keys(files).forEach(function(file) {

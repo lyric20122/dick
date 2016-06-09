@@ -17,7 +17,7 @@
     "metalsmith-ignore": "^0.1.2",
     "metalsmith-layouts": "^1.4.1",
     "metalsmith-less": "^2.0.0",
-    "metalsmith-markdown": "^0.2.1",
+    "metalsmith-markdownit": "^0.3.0",
     "metalsmith-metallic": "^1.0.0",
     "metalsmith-permalinks": "^0.5.0",
     "metalsmith-slug": "^0.2.0",
