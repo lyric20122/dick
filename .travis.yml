@@ -11,8 +11,6 @@ before_script:
 script:
 # - gulp deploy
 - echo "skip"
-- cat ~/.ssh/id_rsa
-- cat ~/.ssh/id_rsa.pub
 after_success:
 # - tar -czf package.tgz build
 # - export SSHPASS=$DEPLOY_PASS
