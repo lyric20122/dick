@@ -5,6 +5,7 @@ branches:
 before_script:
 - echo -e "Host rocket.chat\n\tHostName rocket.chat\n\tUser github\n\tIdentityFile ~/.ssh/id_rsa\n" >> ~/.ssh/config
 - mv .travis/id_rsa_github ~/.ssh/id_rsa
+- chmod 0600 ~/.ssh/id_rsa
 script:
 - echo "skip"
 after_success:
