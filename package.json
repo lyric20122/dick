@@ -26,5 +26,8 @@
     "serve-static": "^1.11.0",
     "slugify-path": "^1.2.0",
     "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "run-sequence": "^1.2.1"
   }
 }
