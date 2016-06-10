@@ -9,6 +9,7 @@ before_script:
 script:
 - gulp deploy
 after_success:
+- tar -czf package.tgz build
 - scp -o "StrictHostKeyChecking no" package.tgz $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
 - ssh -o "StrictHostKeyChecking no" $DEPLOY_USER@$DEPLOY_HOST $DEPLOY_PATH/deploy.sh
 env:
