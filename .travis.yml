@@ -7,11 +7,9 @@ before_script:
 - mv .travis/id_rsa_github ~/.ssh/id_rsa
 - chmod 0600 ~/.ssh/id_rsa
 script:
-- echo "skip"
+- gulp deploy
 after_success:
-- echo $DEPLOY_USER
-- echo $DEPLOY_HOST
-- echo $DEPLOY_PATH
+- scp -o "StrictHostKeyChecking no" package.tgz $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
 - ssh -o "StrictHostKeyChecking no" $DEPLOY_USER@$DEPLOY_HOST $DEPLOY_PATH/deploy.sh
 env:
   global:
