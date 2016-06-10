@@ -6,6 +6,7 @@ var gulp = require('gulp');
 var less = require('gulp-less');
 var plugins = require('gulp-load-plugins')();
 var path = require('path');
+var modRewrite = require('connect-modrewrite');
 var serveStatic = require('serve-static');
 
 // Function to clean files using del()
@@ -40,6 +41,9 @@ gulp.task('connect', function() {
 		port: 8090,
 		middleware: function() {
 			return [
+				modRewrite([
+					'^/?$ /docs/ [R]'
+				]),
 				serveStatic('build', { extensions: ['html'] })
 			];
 		}
