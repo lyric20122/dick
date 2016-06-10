@@ -34,7 +34,6 @@ function createMenu(fileTree, initialItem, initialPath, level) {
 
 		if (item.match(/\.md$/)) {
 			linkClass = 'guide-sub-nav-item';
-			extension = '.html';
 		} else {
 			linkClass = 'guide-nav-item';
 		}

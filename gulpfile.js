@@ -6,6 +6,7 @@ var gulp = require('gulp');
 var less = require('gulp-less');
 var plugins = require('gulp-load-plugins')();
 var path = require('path');
+var serveStatic = require('serve-static');
 
 // Function to clean files using del()
 function clean(path) {
@@ -36,7 +37,12 @@ gulp.task('connect', function() {
 	plugins.connect.server({
 		root: 'build',
 		livereload: true,
-		port: 8090
+		port: 8090,
+		middleware: function() {
+			return [
+				serveStatic('build', { extensions: ['html'] })
+			];
+		}
 	});
 });
 

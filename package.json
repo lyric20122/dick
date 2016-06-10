@@ -19,9 +19,10 @@
     "metalsmith-ignore": "^0.1.2",
     "metalsmith-layouts": "^1.4.1",
     "metalsmith-less": "^2.0.0",
-    "metalsmith-markdownit": "^0.3.0",
+    "metalsmith-markdown": "^0.2.1",
     "metalsmith-slug": "^0.2.0",
     "path": "^0.12.7",
+    "serve-static": "^1.11.0",
     "slugify-path": "^1.2.0",
     "underscore": "^1.8.3"
   }

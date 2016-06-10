@@ -20,7 +20,7 @@ function slugifyLinks(rootPath) {
 				if (!$(this).attr('href').match(/(^https?:\/\/|\/\/)/)) {
 					var old = decodeURIComponent($(this).attr('href'));
 
-					var newHref = slug(old);
+					var newHref = slug(old, null, true);
 
 					if (old.match(/^\//)) {
 						$(this).attr('href', rootPath+'/'+newHref.replace(/(^|\/)[0-9\-]+/g, '$1'));
