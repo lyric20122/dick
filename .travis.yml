@@ -16,7 +16,7 @@ after_success:
 - echo $DEPLOY_HOST
 - echo $DEPLOY_PATH
 # - sshpass -e scp package.tgz $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
-- ssh $DEPLOY_USER@$DEPLOY_HOST $DEPLOY_PATH/deploy.sh
+- ssh -o "StrictHostKeyChecking no" $DEPLOY_USER@$DEPLOY_HOST $DEPLOY_PATH/deploy.sh
 env:
   global:
   - secure: V9dhhCGT7vPCh3X/+d5NOhUMGH5AxnjjMofg4ld+9Pi/zJuvldnj1dVo9DD9oR70sNrhhNcPajQ5Bs5X732RXFIUGNv0aykmsEj+TRs53Xd0v7+ZlOWN8NyajCAowaVl+hU4lCbvVqvaffmWAa6p6Xmvzn/1K2nshZ+Fyy+XTEOBn81JHlbIc6FgVTsUaBpFxfjSwSSFIad/id5/owoYcYXVkO3ZIsueKjgOTqkDbU2/FL+/zY0N6FAKrkOoLRx5CIff7sVUUIH3+rf9l5051Glh3TE5hGHiZzLXg908QbOZzFG5oc3yXGvNbVJWt47J1NB0HlYLilqqwhBVUaEBaJTNQKhICkNnKj51N1O1ErAUkYMid7C9ynqeTKu3HXxvwUGQ2EKFZnTbL+Nd2i8ZcS7lWc4dYcUFfndIR8W+2WqoYF9IOFtfx5r8aTKS0wG7WOCMcqhvjD1bLrnTX1RbuRxw2tNee7M/bSLzDnf2zugbjFnhFLnGkduOFXrGpA4tAaaG4zZDZa1A6vIkSjQBMKMnotjXAMkdsAzbSUdzgZ1XzbKd8fa6gsV6GURRwQvSfoJ6UoKgb4x8S5yr/ze/r6R9JQ+kwJZ40UPoy9eEIpBZJTh33rSFPIOyYoSe5tQ+WZxFK0s4ciYh0VGy0UglCCc5JolpHhpqapfQQadh4ss=
