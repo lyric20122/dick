@@ -10,7 +10,7 @@ var hljs = require("highlight.js");
 var slug = require('metalsmith-slug');
 var ignore = require('metalsmith-ignore');
 var headingsidentifier = require("metalsmith-headings-identifier");
-var markdown = require('metalsmith-markdownit');
+var markdown = require('metalsmith-markdown');
 
 var rootDir = '';
 if (process.argv[2]) {
@@ -35,9 +35,9 @@ Metalsmith(__dirname)
 	.use(slugifyFiles())
 	.use(generateMenu(rootDir))
 	.use(markdown({
-		typographer: true,
-		html: true,
-		linkify: true,
+		smartypants: true,
+		gfm: true,
+		tables: true,
 		highlight: function(str, lang) {
 			if (lang && hljs.getLanguage(lang)) {
 				try {
@@ -45,7 +45,7 @@ Metalsmith(__dirname)
 				} catch (__) {}
 			}
 
-			return ''; // use external default escaping
+			return str; // use external default escaping
 		}
 	}))
 	.use(function(files, metalsmith, done) {

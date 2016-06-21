@@ -6,11 +6,16 @@ var gulp = require('gulp');
 var less = require('gulp-less');
 var plugins = require('gulp-load-plugins')();
 var path = require('path');
+var modRewrite = require('connect-modrewrite');
+var serveStatic = require('serve-static');
+var runSequence = require('run-sequence');
 
 // Function to clean files using del()
 function clean(path) {
 	return del.sync(path);
 }
+
+var build = false;
 
 // Object with directory paths for further usage
 var rootPath = '/docs';
@@ -24,19 +29,31 @@ var dirs = {
 gulp.task('metalsmith', function(cb) {
 	exec('node index.js ' + rootPath, function(err) {
 		if (!err) {
-			gulp.src(dirs.build + '/**/*')
-				.pipe(plugins.connect.reload())
-				.on('end', cb);
+			if (!build) {
+				gulp.src(dirs.build + '/**/*')
+					.pipe(plugins.connect.reload())
+					.on('end', cb);
+			} else {
+				cb();
+			}
 		}
 	});
-})
+});
 
 // Connect task to serve web server and reload automatically
 gulp.task('connect', function() {
 	plugins.connect.server({
 		root: 'build',
 		livereload: true,
-		port: 8090
+		port: 8090,
+		middleware: function() {
+			return [
+				modRewrite([
+					'^/?$ /docs/ [R]'
+				]),
+				serveStatic('build', { extensions: ['html'] })
+			];
+		}
 	});
 });
 
@@ -50,7 +67,7 @@ gulp.task('clean', function() {
 	return clean(files);
 });
 
-gulp.task('less', ['metalsmith'], function() {
+gulp.task('less', ['metalsmith'], function(cb) {
 	return gulp.src('./layouts/styles/main.less')
 		.pipe(less({
 			paths: './layouts/styles'
@@ -77,25 +94,11 @@ gulp.task('git', ['clean'], function(cb) {
 	});
 });
 
-gulp.task('build', ['git'], function(cb) {
-	console.log('git done');
-	exec('node index.js ' + rootPath, function(err) {
-		cb();
-	});
-});
-
-gulp.task('build-css', ['build'], function(cb) {
-	return gulp.src('./layouts/styles/main.less')
-		.pipe(less({
-			paths: './layouts/styles'
-		}))
-		.pipe(gulp.dest('./build' + rootPath + '/assets'));
-});
-
-// Register tasks
 gulp.task('fetch', ['git']);
 gulp.task('default', ['connect', 'metalsmith', 'less', 'watch']);
 
-gulp.task('deploy', ['git', 'build', 'build-css']);
-// gulp.task('deploy', ['git', 'build', 'less']);
+gulp.task('build', function() {
+	build = true;
+	runSequence('clean', 'git', ['metalsmith', 'less']);
+});
 

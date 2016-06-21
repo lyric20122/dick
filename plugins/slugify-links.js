@@ -24,7 +24,7 @@ function slugifyLinks(rootPath) {
 						old = parseRelative(old, file);
 					}
 
-					var newHref = slug(old);
+					var newHref = slug(old, null, true);
 
 					if (old.match(/^\//)) {
 						$(this).attr('href', rootPath+'/'+newHref.replace(/(^|\/)[0-9\-]+/g, '$1'));

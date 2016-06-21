@@ -1,6 +1,6 @@
 var slugifyPath = require('slugify-path').default;
 
-function slug(filePath, data) {
+function slug(filePath, data, removeMDLink) {
 	if (filePath.charAt(0) === '/') {
 		filePath = filePath.substr(1);
 	}
@@ -34,7 +34,12 @@ function slug(filePath, data) {
 			var lastDot = fileParts[i].lastIndexOf('.');
 			if (lastDot > -1) {
 				// console.log('name ->',fileParts[i].substr(0, lastDot));
-				fileParts[i] = slugifyPath(fileParts[i].substr(0, lastDot)) + fileParts[i].substr(lastDot);
+				var extension = fileParts[i].substr(lastDot);
+				if (extension === '.md' && !!removeMDLink) {
+					extension = '';
+				}
+
+				fileParts[i] = slugifyPath(fileParts[i].substr(0, lastDot)) + extension;
 			} else {
 				fileParts[i] = slugifyPath(fileParts[i]);
 			}
