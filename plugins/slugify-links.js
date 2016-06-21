@@ -20,6 +20,10 @@ function slugifyLinks(rootPath) {
 				if (!$(this).attr('href').match(/(^https?:\/\/|\/\/)/)) {
 					var old = decodeURIComponent($(this).attr('href'));
 
+					if (old.match(/^\.+/)) {
+						old = parseRelative(old, file);
+					}
+
 					var newHref = slug(old);
 
 					if (old.match(/^\//)) {
@@ -36,4 +40,23 @@ function slugifyLinks(rootPath) {
 			done();
 		});
 	};
+}
+
+function parseRelative(link, file) {
+	var fileParts = file.split('/');
+	var linkParts = link.split('/');
+
+	var parentCount = linkParts.length;
+
+	var relativeLink = [];
+
+	for (var i = 0, total = linkParts.length; i < total; i++) {
+		if (linkParts[i] === '..') {
+			parentCount--;
+		} else {
+			relativeLink.push(linkParts[i]);
+		}
+	}
+
+	return '/' + fileParts.slice(0, parentCount).join('/') + '/' + relativeLink.join('/');
 }
