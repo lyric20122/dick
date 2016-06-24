@@ -11,6 +11,7 @@ var slug = require('metalsmith-slug');
 var ignore = require('metalsmith-ignore');
 var headingsidentifier = require("metalsmith-headings-identifier");
 var markdown = require('metalsmith-markdown');
+var drafts = require('metalsmith-drafts');
 
 var rootDir = '';
 if (process.argv[2]) {
@@ -31,6 +32,7 @@ Metalsmith(__dirname)
 		'.git/**/*',
 		'.git*'
 	]))
+	.use(drafts())
 	.use(parseGitHubLinks())
 	.use(slugifyFiles())
 	.use(generateMenu(rootDir))
