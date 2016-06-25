@@ -41,7 +41,7 @@ gulp.task('metalsmith', function(cb) {
 });
 
 // Connect task to serve web server and reload automatically
-gulp.task('connect', function() {
+gulp.task('connect', ['metalsmith'], function() {
 	plugins.connect.server({
 		root: 'build',
 		livereload: true,

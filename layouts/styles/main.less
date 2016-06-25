@@ -274,6 +274,34 @@ hr {
 				font-weight: bold;
 			}
 
+			.header-link {
+				position: absolute;
+				margin-left: -20px;
+				display: inline-block;
+				padding-right: 4px;
+				line-height: 1;
+
+				svg {
+					vertical-align: middle;
+					display: inline-block;
+					visibility: hidden;
+
+					path {
+						fill: #404040;
+					}
+				}
+			}
+
+			h1, h2, h3, h4, h5, h6 {
+				&:hover {
+					.header-link {
+						svg {
+							visibility: visible;
+						}
+					}
+				}
+			}
+
 			a {
 				color: blue;
 			}
