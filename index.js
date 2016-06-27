@@ -39,7 +39,9 @@ Metalsmith(__dirname)
 	.clean(true)
 	.use(ignore([
 		'.git/**/*',
-		'.git*'
+		'.git*',
+		'.travis/**/*',
+		'.travis*'
 	]))
 	.use(drafts())
 	.use(parseGitHubLinks())
