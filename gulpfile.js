@@ -99,6 +99,6 @@ gulp.task('default', ['connect', 'metalsmith', 'less', 'watch']);
 
 gulp.task('build', function() {
 	build = true;
-	runSequence('clean', 'git', ['metalsmith', 'less']);
+	runSequence(['metalsmith', 'less']);
 });
 
