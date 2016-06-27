@@ -12,11 +12,20 @@ var ignore = require('metalsmith-ignore');
 var headingsidentifier = require("metalsmith-headings-identifier");
 var markdown = require('metalsmith-markdown');
 var drafts = require('metalsmith-drafts');
+var Handlebars = require('handlebars');
 
 var rootDir = '';
 if (process.argv[2]) {
 	rootDir = process.argv[2];
 }
+
+Handlebars.registerHelper('equal', function(v1, v2, options) {
+	if (v1 != v2) {
+		return options.inverse(this);
+	} else {
+		return options.fn(this);
+	}
+});
 
 Metalsmith(__dirname)
 	.metadata({

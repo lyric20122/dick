@@ -30,8 +30,6 @@ function createMenu(fileTree, initialItem, initialPath, level) {
 			return;
 		}
 
-		var extension = '';
-
 		if (item.match(/\.md$/)) {
 			linkClass = 'guide-sub-nav-item';
 		} else {
@@ -42,7 +40,7 @@ function createMenu(fileTree, initialItem, initialPath, level) {
 		folders.push({
 			label: title,
 			sortTitle: initialItem + '-' + (item.match(/\.md$/) ? '' : item),
-			link: initialPath + '/' + slugifyPath(title) + extension,
+			link: initialPath + '/' + slugifyPath(title),
 			class: linkClass + levelClass
 		});
 
@@ -72,6 +70,7 @@ function generateMenu() {
 
 		var newFolders = _.sortBy(folders, 'sortTitle');
 		for (var file in files) {
+			files[file].path = '/' + file.substr(0, file.lastIndexOf('/')).replace(/^[0-9]+\. /, '');
 			files[file].mainNav = newFolders;
 		}
 
